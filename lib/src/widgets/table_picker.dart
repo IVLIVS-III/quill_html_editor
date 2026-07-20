@@ -35,7 +35,7 @@ class _TablePickerState extends State<TablePicker> {
     super.initState();
   }
 
-  _detectTapedItem(PointerEvent event) {
+  void _detectTapedItem(PointerEvent event) {
     _clearSelection();
     final RenderBox box =
         _cellKey.currentContext!.findAncestorRenderObjectOfType<RenderBox>()!;
@@ -53,7 +53,7 @@ class _TablePickerState extends State<TablePicker> {
     }
   }
 
-  _selectIndex(int index) {
+  void _selectIndex(int index) {
     setState(() {
       _selectedIndexes.add(index);
       List<int> tempList = _selectedIndexes.toList();
@@ -128,8 +128,7 @@ class _CellSelectionWidget extends SingleChildRenderObjectWidget {
   final int index;
 
   const _CellSelectionWidget(
-      {required Widget child, required this.index, Key? key})
-      : super(child: child, key: key);
+      {required Widget super.child, required this.index});
 
   @override
   _CellBox createRenderObject(BuildContext context) {

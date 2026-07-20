@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
     if (!isValidHex(hexColor)) {
-      return Colors.transparent.value;
+      return Colors.transparent.toARGB32();
     }
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
     if (hexColor.length == 6) {
@@ -33,7 +33,7 @@ class HexColor extends Color {
 extension ToHex on Color {
   ///[toHex] extension method to convert Color to hex code
   String toHex() =>
-      '#${(value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
+      '#${(toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
 }
 
 ///[ToRGBA] extension method to convert Color to RGBA
@@ -46,7 +46,7 @@ extension ToRGBA on Color {
         red,
         green,
         blue,
-        double.parse(opacity.toStringAsFixed(1))
+        double.parse(a.toStringAsFixed(1))
       ].join(',')})';
     } catch (e) {
       rgba = 'rgba(0,0,0,0)';
