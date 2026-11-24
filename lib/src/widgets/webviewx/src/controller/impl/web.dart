@@ -1,6 +1,6 @@
 import 'dart:async' show Future;
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:material_ui/material_ui.dart';
@@ -12,10 +12,10 @@ import 'package:quill_html_editor/src/widgets/webviewx/src/utils/web_history.dar
 
 /// Web implementation
 class WebViewXController extends ChangeNotifier
-    implements i.WebViewXController<js.JsObject> {
+    implements i.WebViewXController<JSObject> {
   /// JsObject connector
   @override
-  late js.JsObject connector;
+  late JSObject connector;
 
   // Boolean value notifier used to toggle ignoring gestures on the webview
   final ValueNotifier<bool> _ignoreAllGesturesNotifier;
@@ -125,9 +125,12 @@ class WebViewXController extends ChangeNotifier
   /// print(resultFromJs); // prints "This is a test"
   /// ```
   @override
-  Future<dynamic> callJsMethod(String name, List<dynamic> params) {
-    final result = connector.callMethod(name, params);
-    return Future<dynamic>.value(result);
+  Future<Object?> callJsMethod(String name, List<Object?> params) {
+    final result = connector.callMethodVarArgs(
+      name.toJS,
+      params.map((param) => param.jsify()).toList(),
+    );
+    return Future<Object?>.value(result.dartify());
   }
 
   /// This function allows you to evaluate 'raw' javascript (e.g: 2+2)
@@ -138,15 +141,15 @@ class WebViewXController extends ChangeNotifier
   ///
   /// For more info, check Mozilla documentation on 'window'
   @override
-  Future<dynamic> evalRawJavascript(
+  Future<Object?> evalRawJavascript(
     String rawJavascript, {
     bool inGlobalContext = false,
   }) {
-    final result = (inGlobalContext ? js.context : connector).callMethod(
-      'eval',
-      [rawJavascript],
+    final result = (inGlobalContext ? globalContext : connector).callMethod(
+      'eval'.toJS,
+      rawJavascript.toJS,
     );
-    return Future<dynamic>.value(result);
+    return Future<Object?>.value(result.dartify());
   }
 
   /// Returns the current content
@@ -231,13 +234,15 @@ class WebViewXController extends ChangeNotifier
   /// Retrieves the inner page title
   @override
   Future<String?> getTitle() {
-    return Future.value(connector["document"]["title"].toString());
+    return Future.value(
+      (connector["document"].dartify() as dynamic)["title"].toString(),
+    );
   }
 
   /// Clears cache
   @override
   Future<void> clearCache() {
-    connector["localStorage"].callMethod("clear", []);
+    (connector["localStorage"] as JSObject).callMethod("clear".toJS);
     evalRawJavascript(
       'caches.keys().then((keyList) => Promise.all(keyList.map((key) => caches.delete(key))))',
     );

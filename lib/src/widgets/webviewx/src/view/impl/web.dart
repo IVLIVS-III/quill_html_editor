@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -17,6 +15,7 @@ import 'package:quill_html_editor/src/widgets/webviewx/src/utils/logger.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/utils/utils.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/view/interface.dart'
     as view_interface;
+import 'package:web/web.dart' as web;
 
 /// Web implementation
 class WebViewX extends StatefulWidget implements view_interface.WebViewX {
@@ -140,10 +139,10 @@ class WebViewX extends StatefulWidget implements view_interface.WebViewX {
 }
 
 class _WebViewXState extends State<WebViewX> {
-  late html.IFrameElement iframe;
+  late web.HTMLIFrameElement iframe;
   late String iframeViewType;
   late StreamSubscription iframeOnLoadSubscription;
-  late js.JsObject jsWindowObject;
+  late JSObject jsWindowObject;
 
   late WebViewXController webViewXController;
 
@@ -202,18 +201,18 @@ class _WebViewXState extends State<WebViewX> {
   // Iframe viewType is used as a disambiguator.
   // Check function [embedWebIframeJsConnector] from [HtmlUtils] for details.
   void _connectJsToFlutter({VoidCallback? then}) {
-    js.context['$jsToDartConnectorFN$iframeViewType'] = (js.JsObject window) {
+    globalContext['$jsToDartConnectorFN$iframeViewType'] = (JSObject window) {
       jsWindowObject = window;
 
       /// Register dart callbacks one by one.
       for (final cb in widget.dartCallBacks) {
-        jsWindowObject[cb.name] = cb.callBack;
+        jsWindowObject[cb.name] = cb.callBack.toJS;
       }
 
       // Register history callback
       jsWindowObject[webOnClickInsideIframeCallback] = (onClickCallbackObject) {
         _handleOnIframeClick(onClickCallbackObject as String);
-      };
+      }.toJS;
 
       webViewXController.connector = jsWindowObject;
 
@@ -270,7 +269,7 @@ class _WebViewXState extends State<WebViewX> {
         })
       ]);
       */
-    };
+    }.toJS;
   }
 
   void _registerIframeOnLoadCallback() {
@@ -328,8 +327,8 @@ class _WebViewXState extends State<WebViewX> {
     return HtmlUtils.buildIframeViewType();
   }
 
-  html.IFrameElement _createIFrame() {
-    final iframeElement = html.IFrameElement()
+  web.HTMLIFrameElement _createIFrame() {
+    final iframeElement = web.HTMLIFrameElement()
       ..id = 'id_$iframeViewType'
       ..name = 'name_$iframeViewType'
       ..style.border = 'none'
@@ -340,11 +339,11 @@ class _WebViewXState extends State<WebViewX> {
       ..allowFullscreen = widget.webSpecificParams.webAllowFullscreenContent;
 
     widget.webSpecificParams.additionalSandboxOptions.forEach(
-      iframeElement.sandbox!.add,
+      iframeElement.sandbox.add,
     );
 
     if (widget.javascriptMode == JavascriptMode.unrestricted) {
-      iframeElement.sandbox!.add('allow-scripts');
+      iframeElement.sandbox.add('allow-scripts');
     }
 
     final allow = widget.webSpecificParams.additionalAllowOptions;
@@ -409,7 +408,7 @@ class _WebViewXState extends State<WebViewX> {
           jsContent: widget.jsContent,
           windowDisambiguator: iframeViewType,
           forWeb: true,
-        );
+        ).toJS;
         break;
       case SourceType.url:
       case SourceType.urlBypass:
@@ -419,7 +418,7 @@ class _WebViewXState extends State<WebViewX> {
             jsContent: widget.jsContent,
             windowDisambiguator: iframeViewType,
             forWeb: true,
-          );
+          ).toJS;
           break;
         }
 
@@ -577,7 +576,7 @@ class _WebViewXState extends State<WebViewX> {
       jsContent: widget.jsContent,
       windowDisambiguator: iframeViewType,
       forWeb: true,
-    );
+    ).toJS;
   }
 
   void _debugLog(String text) {
