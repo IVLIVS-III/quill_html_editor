@@ -13,3 +13,4 @@
 ///
 /// Note: There should also (i think?) be a way to update that variable
 /// i.e. to do window[MyVariable] = 6.
+library;

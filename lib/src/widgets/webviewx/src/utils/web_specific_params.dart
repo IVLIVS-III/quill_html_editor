@@ -35,7 +35,7 @@ class WebSpecificParams {
 
   /// Constructor
   const WebSpecificParams({
-    List<BypassProxy> proxyList = BypassProxy.publicProxies,
+    this._proxyList = BypassProxy.publicProxies,
     this.applyProxyLoadBalancing = true,
     this.printDebugInfo = false,
     this.webAllowFullscreenContent = true,
@@ -60,5 +60,5 @@ class WebSpecificParams {
       'picture-in-picture',
     ],
     this.cssLoadingIndicator = const CssLoader(),
-  }) : _proxyList = proxyList;
+  });
 }

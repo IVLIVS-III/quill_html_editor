@@ -13,7 +13,7 @@ class HexColor extends Color {
     return int.parse(hexColor, radix: 16);
   }
 
-////[HexColor.fromHex] method to get color from hex code
+  ////[HexColor.fromHex] method to get color from hex code
   HexColor.fromHex(final String hexColor) : super(_getColorFromHex(hexColor));
 
   ////[isValidHex] method to check if the given hexCode is valid
@@ -25,7 +25,12 @@ class HexColor extends Color {
   ////[getRGBA] method to get the list of RGBA code
 
   List<int> getRGBA(Color c) {
-    return [c.red, c.blue, c.green, c.alpha];
+    return [
+      c.r.round().clamp(0, 255),
+      c.b.round().clamp(0, 255),
+      c.g.round().clamp(0, 255),
+      c.a.round().clamp(0, 255),
+    ];
   }
 }
 
@@ -42,12 +47,8 @@ extension ToRGBA on Color {
   String toRGBA() {
     String rgba = '';
     try {
-      rgba = 'rgba(${[
-        red,
-        green,
-        blue,
-        double.parse(a.toStringAsFixed(1))
-      ].join(',')})';
+      rgba =
+          'rgba(${[r.round().clamp(0, 255), g.round().clamp(0, 255), b.round().clamp(0, 255), double.parse(a.toStringAsFixed(1))].join(',')})';
     } catch (e) {
       rgba = 'rgba(0,0,0,0)';
     }

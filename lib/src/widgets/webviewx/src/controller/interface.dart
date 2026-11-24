@@ -30,7 +30,7 @@ abstract class WebViewXController<T> {
 
   /// Set webview content to the specified `content`.
   /// Example: https://flutter.dev/
-  /// Example2: '<html><head></head> <body> <p> Hi </p> </body></html>
+  /// Example2: `<html><head></head> <body> <p> Hi </p> </body></html>`
   ///
   /// If `fromAssets` param is set to true,
   /// `content` param must be a String path to an asset
@@ -63,10 +63,7 @@ abstract class WebViewXController<T> {
   /// var resultFromJs = await callJsMethod('someFunction', ['test'])
   /// print(resultFromJs); // prints "This is a test"
   /// ```
-  Future<dynamic> callJsMethod(
-    String name,
-    List<dynamic> params,
-  );
+  Future<dynamic> callJsMethod(String name, List<dynamic> params);
 
   /// This function allows you to evaluate 'raw' javascript (e.g: 2+2)
   /// If you need to call a function you should use the method above ([callJsMethod])

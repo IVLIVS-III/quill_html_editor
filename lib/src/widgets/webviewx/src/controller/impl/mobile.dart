@@ -2,8 +2,8 @@ import 'dart:async' show Future;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:material_ui/material_ui.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/controller.dart'
     as i;
 import 'package:quill_html_editor/src/widgets/webviewx/src/utils/utils.dart';
@@ -28,11 +28,11 @@ class WebViewXController extends ChangeNotifier
     required String initialContent,
     required SourceType initialSourceType,
     required bool ignoreAllGestures,
-  })  : _ignoreAllGesturesNotifier = ValueNotifier(ignoreAllGestures),
-        value = WebViewContent(
-          source: initialContent,
-          sourceType: initialSourceType,
-        );
+  }) : _ignoreAllGesturesNotifier = ValueNotifier(ignoreAllGestures),
+       value = WebViewContent(
+         source: initialContent,
+         sourceType: initialSourceType,
+       );
 
   /// Boolean getter which reveals if the gestures are ignored right now
   @override
@@ -61,7 +61,7 @@ class WebViewXController extends ChangeNotifier
 
   /// Set webview content to the specified `content`.
   /// Example: https://flutter.dev/
-  /// Example2: '<html><head></head> <body> <p> Hi </p> </body></html>
+  /// Example2: `<html><head></head> <body> <p> Hi </p> </body></html>`
   ///
   /// If `fromAssets` param is set to true,
   /// `content` param must be a String path to an asset
@@ -115,10 +115,7 @@ class WebViewXController extends ChangeNotifier
   /// ```
   //TODO This should return an error if the operation failed, but it doesn't
   @override
-  Future<dynamic> callJsMethod(
-    String name,
-    List<dynamic> params,
-  ) async {
+  Future<dynamic> callJsMethod(String name, List<dynamic> params) async {
     // This basically will transform a "raw" call (evaluateJavascript)
     // into a little bit more "typed" call, that is - calling a method.
     final result = await connector.runJavaScriptReturningResult(

@@ -2,8 +2,8 @@ import 'dart:async' show Future;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:material_ui/material_ui.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/interface.dart'
     as i;
 import 'package:quill_html_editor/src/widgets/webviewx/src/utils/logger.dart';
@@ -32,13 +32,13 @@ class WebViewXController extends ChangeNotifier
     required String initialContent,
     required SourceType initialSourceType,
     required bool ignoreAllGestures,
-  })  : _ignoreAllGesturesNotifier = ValueNotifier(ignoreAllGestures),
-        _history = HistoryStack<WebViewContent>(
-          initialEntry: WebViewContent(
-            source: initialContent,
-            sourceType: initialSourceType,
-          ),
-        );
+  }) : _ignoreAllGesturesNotifier = ValueNotifier(ignoreAllGestures),
+       _history = HistoryStack<WebViewContent>(
+         initialEntry: WebViewContent(
+           source: initialContent,
+           sourceType: initialSourceType,
+         ),
+       );
 
   /// Boolean getter which reveals if the gestures are ignored right now
   @override
@@ -67,7 +67,7 @@ class WebViewXController extends ChangeNotifier
 
   /// Set webview content to the specified `content`.
   /// Example: https://flutter.dev/
-  /// Example2: '<html><head></head> <body> <p> Hi </p> </body></html>
+  /// Example2: `<html><head></head> <body> <p> Hi </p> </body></html>`
   ///
   /// If `fromAssets` param is set to true,
   /// `content` param must be a String path to an asset
@@ -125,10 +125,7 @@ class WebViewXController extends ChangeNotifier
   /// print(resultFromJs); // prints "This is a test"
   /// ```
   @override
-  Future<dynamic> callJsMethod(
-    String name,
-    List<dynamic> params,
-  ) {
+  Future<dynamic> callJsMethod(String name, List<dynamic> params) {
     final result = connector.callMethod(name, params);
     return Future<dynamic>.value(result);
   }
@@ -199,10 +196,12 @@ class WebViewXController extends ChangeNotifier
   /// Get scroll position
   @override
   Future<Offset> getScrollPosition() {
-    return Future.value(Offset(
-      double.tryParse(connector["scrollX"].toString()) ?? 0,
-      double.tryParse(connector["scrollY"].toString()) ?? 0,
-    ));
+    return Future.value(
+      Offset(
+        double.tryParse(connector["scrollX"].toString()) ?? 0,
+        double.tryParse(connector["scrollY"].toString()) ?? 0,
+      ),
+    );
   }
 
   /// Get scroll position on X axis
