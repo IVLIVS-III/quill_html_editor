@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Modal is the fullscreen window displayed behind the tooltip.
 /// It's used to focus the user attention to the tooltip.

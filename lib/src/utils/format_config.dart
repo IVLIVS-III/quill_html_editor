@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quill_html_editor/src/utils/hex_color.dart';
 
 ///[FormatConfig] to create a format map for insertText

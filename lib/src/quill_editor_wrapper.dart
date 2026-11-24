@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 import 'package:quill_html_editor/src/utils/hex_color.dart';
@@ -177,7 +177,7 @@ class QuillHtmlEditorState extends State<QuillHtmlEditor> {
   late String _encodedStyle;
   bool _editorLoaded = false;
   @override
-  initState() {
+  void initState() {
     _loadScripts = rootBundle.loadString(
         'packages/quill_html_editor/assets/scripts/quill_2.0.0_4_min.js');
     _fontFamily = widget.textStyle?.fontFamily ?? 'Roboto';

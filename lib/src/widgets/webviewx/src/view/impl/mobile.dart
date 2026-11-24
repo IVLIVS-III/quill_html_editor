@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/impl/mobile.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/interface.dart'
     as ctrl_interface;

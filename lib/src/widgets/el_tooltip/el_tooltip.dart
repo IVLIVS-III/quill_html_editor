@@ -1,6 +1,6 @@
 library el_tooltip;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/webviewx_plus.dart';
 
 import 'src/arrow.dart';

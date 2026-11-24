@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 ////[HexColor] color utility class to convert hex to color
 class HexColor extends Color {

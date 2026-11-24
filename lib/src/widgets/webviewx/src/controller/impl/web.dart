@@ -2,7 +2,7 @@ import 'dart:async' show Future;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/interface.dart'
     as i;

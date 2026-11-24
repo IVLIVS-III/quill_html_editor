@@ -5,7 +5,7 @@ import 'dart:html' as html;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/impl/web.dart';
 import 'package:quill_html_editor/src/widgets/webviewx/src/controller/interface.dart'
