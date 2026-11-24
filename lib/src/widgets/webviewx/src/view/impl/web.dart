@@ -206,13 +206,15 @@ class _WebViewXState extends State<WebViewX> {
 
       /// Register dart callbacks one by one.
       for (final cb in widget.dartCallBacks) {
-        jsWindowObject[cb.name] = cb.callBack.toJS;
+        jsWindowObject[cb.name] = cb.asJSCallback.toJS;
       }
 
       // Register history callback
-      jsWindowObject[webOnClickInsideIframeCallback] = (onClickCallbackObject) {
-        _handleOnIframeClick(onClickCallbackObject as String);
-      }.toJS;
+      void cb(String onClickCallbackObject) {
+        _handleOnIframeClick(onClickCallbackObject);
+      }
+
+      jsWindowObject[webOnClickInsideIframeCallback] = cb.toJS;
 
       webViewXController.connector = jsWindowObject;
 
@@ -338,9 +340,9 @@ class _WebViewXState extends State<WebViewX> {
       ..style.height = "100%"
       ..allowFullscreen = widget.webSpecificParams.webAllowFullscreenContent;
 
-    widget.webSpecificParams.additionalSandboxOptions.forEach(
-      iframeElement.sandbox.add,
-    );
+    for (var option in widget.webSpecificParams.additionalSandboxOptions) {
+      iframeElement.sandbox.add(option);
+    }
 
     if (widget.javascriptMode == JavascriptMode.unrestricted) {
       iframeElement.sandbox.add('allow-scripts');

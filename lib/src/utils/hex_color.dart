@@ -47,8 +47,11 @@ extension ToRGBA on Color {
   String toRGBA() {
     String rgba = '';
     try {
-      rgba =
-          'rgba(${[r.round().clamp(0, 255), g.round().clamp(0, 255), b.round().clamp(0, 255), double.parse(a.toStringAsFixed(1))].join(',')})';
+      final int red = (r * 255.0).round().clamp(0, 255);
+      final int green = (g * 255.0).round().clamp(0, 255);
+      final int blue = (b * 255.0).round().clamp(0, 255);
+      final int alpha = (a * 255.0).round().clamp(0, 255);
+      rgba = 'rgba(${[red, green, blue, alpha].join(',')})';
     } catch (e) {
       rgba = 'rgba(0,0,0,0)';
     }
