@@ -18,16 +18,13 @@ class ImageSelector {
   ///[pickFiles] to pick the files
   Future<void> pickFiles() async {
     try {
-      FilePickerResult? result = await FilePicker.pickFiles(
-          allowMultiple: false, type: _pickingType, withData: true);
+      PlatformFile? result = await FilePicker.pickFile(type: _pickingType);
 
       if (result != null) {
-        PlatformFile file = result.files.first;
-        Uint8List? bytes = file.bytes;
-        if (bytes != null) {
-          String base64String = base64Encode(bytes);
-          onImagePicked('data:image/${file.extension};base64,$base64String');
-        }
+        PlatformFile file = result;
+        Uint8List? bytes = await file.readAsBytes();
+        String base64String = base64Encode(bytes);
+        onImagePicked('data:image/${file.extension};base64,$base64String');
       }
     } on PlatformException catch (e) {
       debugPrint('Unsupported operation $e');
@@ -38,5 +35,5 @@ class ImageSelector {
 }
 
 ///[OnPickImageCallback] typedef for onPickImageCallback
-typedef OnPickImageCallback = void Function(
-    double? maxWidth, double? maxHeight, int? quality);
+typedef OnPickImageCallback =
+    void Function(double? maxWidth, double? maxHeight, int? quality);
