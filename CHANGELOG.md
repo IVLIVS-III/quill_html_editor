@@ -1,3 +1,10 @@
+### 4.0.0
+
+- Updated to Flutter `3.50.0`
+- Added `wasm` support
+
+### 3.0.0
+
 ### 2.2.8
 
 - Updated all dependencies to their latest versions
@@ -194,10 +201,3 @@
 ###  0.1.4
 
 - Fixed Readme
-
-
-
-
-
-
-
