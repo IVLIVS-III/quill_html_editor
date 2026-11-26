@@ -348,14 +348,14 @@ class _WebViewXState extends State<WebViewX> {
       iframeElement.sandbox.add('allow-scripts');
     }
 
-    final allow = widget.webSpecificParams.additionalAllowOptions;
+    final allow = {
+      ...widget.webSpecificParams.additionalAllowOptions,
+      if (widget.initialMediaPlaybackPolicy ==
+          AutoMediaPlaybackPolicy.alwaysAllow)
+        'autoplay',
+    };
 
-    if (widget.initialMediaPlaybackPolicy ==
-        AutoMediaPlaybackPolicy.alwaysAllow) {
-      allow.add('autoplay');
-    }
-
-    iframeElement.allow = allow.reduce((curr, next) => '$curr; $next');
+    iframeElement.allow = allow.join('; ');
 
     return iframeElement;
   }

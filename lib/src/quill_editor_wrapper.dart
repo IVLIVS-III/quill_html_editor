@@ -247,26 +247,6 @@ class QuillHtmlEditorState extends State<QuillHtmlEditor> {
           ignoreAllGestures: false,
           width: width,
           onWebViewCreated: (controller) => _webviewController = controller,
-          onPageFinished: (src) {
-            Future.delayed(const Duration(milliseconds: 100)).then((value) {
-              _editorLoaded = true;
-              debugPrint('_editorLoaded $_editorLoaded');
-              if (mounted) {
-                setState(() {});
-              }
-              widget.controller.enableEditor(isEnabled);
-              if (widget.text != null) {
-                _setHtmlTextToEditor(htmlText: widget.text!);
-              }
-              if (widget.autoFocus == true) {
-                widget.controller.focus();
-              }
-              if (widget.onEditorCreated != null) {
-                widget.onEditorCreated!();
-              }
-              widget.controller._editorLoadedController?.add('');
-            });
-          },
           dartCallBacks: {
             DartCallback(
               name: 'EditorResizeCallback',
@@ -421,6 +401,29 @@ class QuillHtmlEditorState extends State<QuillHtmlEditor> {
                 if (mounted) {
                   setState(() {});
                 }
+              },
+            ),
+            DartCallback(
+              name: 'QuillReady',
+              callBack: (_) {
+                if (!mounted) return;
+
+                _editorLoaded = true;
+                debugPrint('_editorLoaded $_editorLoaded');
+                if (mounted) {
+                  setState(() {});
+                }
+                widget.controller.enableEditor(isEnabled);
+                if (widget.text != null) {
+                  _setHtmlTextToEditor(htmlText: widget.text!);
+                }
+                if (widget.autoFocus == true) {
+                  widget.controller.focus();
+                }
+                if (widget.onEditorCreated != null) {
+                  widget.onEditorCreated!();
+                }
+                widget.controller._editorLoadedController?.add('');
               },
             ),
           },
@@ -1159,7 +1162,7 @@ class QuillHtmlEditorState extends State<QuillHtmlEditor> {
                 rangeMap['index'] = range.index;
                 return JSON.stringify(rangeMap);
               }
-              return {};
+              return JSON.stringify({ index: 0, length: 0 });
             }
             
             function setSelection(index, length) {
@@ -1297,6 +1300,11 @@ class QuillHtmlEditorState extends State<QuillHtmlEditor> {
             }
               return '';
             } 
+
+          // Notify Dart that Quill initialization is complete.
+          if ($kIsWeb) {
+            QuillReady(true);
+          }
         </script>
         </body>
         </html>

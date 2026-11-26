@@ -125,12 +125,12 @@ class WebViewXController extends ChangeNotifier
   /// print(resultFromJs); // prints "This is a test"
   /// ```
   @override
-  Future<Object?> callJsMethod(String name, List<Object?> params) {
+  Future<Object?> callJsMethod(String name, List<Object?> params) async {
     final result = connector.callMethodVarArgs(
       name.toJS,
       params.map((param) => param.jsify()).toList(),
     );
-    return Future<Object?>.value(result.dartify());
+    return result.dartify();
   }
 
   /// This function allows you to evaluate 'raw' javascript (e.g: 2+2)
@@ -144,12 +144,12 @@ class WebViewXController extends ChangeNotifier
   Future<Object?> evalRawJavascript(
     String rawJavascript, {
     bool inGlobalContext = false,
-  }) {
+  }) async {
     final result = (inGlobalContext ? globalContext : connector).callMethod(
       'eval'.toJS,
       rawJavascript.toJS,
     );
-    return Future<Object?>.value(result.dartify());
+    return result.dartify();
   }
 
   /// Returns the current content
