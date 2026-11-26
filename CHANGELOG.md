@@ -1,3 +1,7 @@
+### 4.0.1
+
+- Fixed conditional imports (`wasm`)
+
 ### 4.0.0
 
 - Updated to Flutter `3.50.0`
